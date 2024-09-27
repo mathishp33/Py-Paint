@@ -33,7 +33,14 @@ class UI():
                             (self.font48.render('Image', True, (255, 255, 255)), self.font48.render('Image', True, (255, 255, 255)).get_rect(center=(800, 50)))
                             ]
         
-        
+    def save(self):
+        surface = pg.Surface(900, 900)
+        for i in shapes:
+            if i[0] == 'circle': pg.draw.circle(surface, i[1], i[2], i[3])
+            if i[0] == 'rect': pg.draw.rect(surface, i[1], pg.Rect(i[2][0]-i[3]/2, i[2][1]-i[3]/2, i[3], i[3]))
+        pg.image.save(surface, self.name+'.png')
+
+        pg.image.save()
     def file_button(self):
         save_text = self.font32.render('Save', True, (200, 200, 200))
         save_rect= save_text.get_rect(center=(50, 120))
@@ -52,13 +59,16 @@ class UI():
                     return False
                 if pg.mouse.get_pressed()[0]:
                     if save_rect.collidepoint(mouse_pos):
-                        self.name = tk.StringVar()
                         root = tk.Tk()
-                        root.geometry("300x400")
+                        root.geometry("200x100")
                         root.resizable(False, False)
                         root.title('Save an Image')
+
                         Frame = ttk.Frame(root)
+                        Frame.pack(padx=10, pady=10, fill='x', expand=True)
+
                         text0 = ttk.Label(Frame, text="Name of the Image")
+                        self.name = tk.StringVar()
                         text0.pack(fill='x', expand=True)
                         entry0 = ttk.Entry(Frame, textvariable=self.name)
                         entry0.pack(fill='x', expand=True)
