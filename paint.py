@@ -29,7 +29,8 @@ class UI():
         self.buttons_pan = [(self.font48.render('File', True, (255, 255, 255)), self.font48.render('File', True, (255, 255, 255)).get_rect(center=(50, 50))),
                             (self.font48.render('Scale', True, (255, 255, 255)), self.font48.render('Scale', True, (255, 255, 255)).get_rect(center=(200, 50))),
                             (self.font48.render('Shapes', True, (255, 255, 255)), self.font48.render('Shapes', True, (255, 255, 255)).get_rect(center=(400, 50))),
-                            (self.font48.render('Color', True, (255, 255, 255)), self.font48.render('Color', True, (255, 255, 255)).get_rect(center=(600, 50)))
+                            (self.font48.render('Color', True, (255, 255, 255)), self.font48.render('Color', True, (255, 255, 255)).get_rect(center=(600, 50))),
+                            (self.font48.render('Image', True, (255, 255, 255)), self.font48.render('Image', True, (255, 255, 255)).get_rect(center=(800, 50)))
                             ]
         
         
@@ -101,8 +102,10 @@ class UI():
                 if pg.mouse.get_pressed()[0]:
                     if rect_rect.collidepoint(mouse_pos):
                         self.shape = 'rect'
+                        return True
                     if ci_rect.collidepoint(mouse_pos):
                         self.shape = 'circle'
+                        return True
                     else:
                         time.sleep(0.1)
                         if pg.mouse.get_pressed()[0]:    
@@ -160,6 +163,27 @@ class UI():
                             if self.G<1: self.G = 1
                             if self.B<1: self.B = 1
                             return True
+    def image_button(self):
+        save_text = self.font32.render('Save', True, (200, 200, 200))
+        save_rect= save_text.get_rect(center=(50, 120))
+        pg.draw.rect(screen, (50, 50, 50), save_rect, 0, 5)
+        screen.blit(save_text, save_rect)
+        load_text = self.font32.render('Load', True, (200, 200, 200))
+        load_rect= load_text.get_rect(center=(50, 160))
+        pg.draw.rect(screen, (50, 50, 50), load_rect, 0, 5)
+        screen.blit(load_text, load_rect)
+        pg.display.update()
+        running = True
+        while running:
+            mouse_pos = pg.mouse.get_pos()
+            for event in pg.event.get():
+                if event.type == pg.QUIT:
+                    return False
+                if event.type == pg.MOUSEBUTTONDOWN:
+                    if save_rect.collidepoint(mouse_pos):
+                        pass
+                    else:
+                        return True
     def draw(self):
         pg.draw.rect(screen, (50, 50, 50), pg.Rect(0, 0, WIDTH, 100))
         for j in range(len(self.buttons_pan)):
@@ -174,6 +198,8 @@ class UI():
                     return self.shape_button()
                 if j == 3:
                     return self.color_button()
+                if j == 3:
+                    return self.image_button()
         return True
     
 
@@ -208,7 +234,7 @@ while running:
     running = ui.draw()
     for i in shapes:
         if i[0] == 'circle': pg.draw.circle(screen, i[1], i[2], i[3])
-        if i[0] == 'rect': pg.draw.rect(screen, i[1], pg.Rect(i[2][0], i[2][1], i[3], i[3]))
+        if i[0] == 'rect': pg.draw.rect(screen, i[1], pg.Rect(i[2][0]-i[3]/2, i[2][1]-i[3]/2, i[3], i[3]))
     pg.display.flip()
     clock.tick(FPS)
     
