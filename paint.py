@@ -19,12 +19,7 @@ def update():
         pg.display.update(pg.Rect(120, 20, 100, 50))
             
         
-    name = ''
-    surface = pg.Surface(1600, 900)
-    for i in shapes:
-        if i[0] == 'circle': pg.draw.circle(surface, i[1], i[2], i[3])
-        if i[0] == 'rect': pg.draw.rect(surface, i[1], pg.Rect(i[2][0], i[2][1], i[3], i[3]))
-    pg.image.save(surface, name+'.png')
+
 
 class UI():
     def __init__(self):
@@ -69,8 +64,17 @@ class UI():
                                 if event.type == pg.QUIT:
                                     running = False
                                     return False
+            pg.display.update(pg.Rect(120, 20, 100, 50))   
+
+            
+        name = ''
+        surface = pg.Surface(1600, 900)
+        for i in shapes:
+            if i[0] == 'circle': pg.draw.circle(surface, i[1], i[2], i[3])
+            if i[0] == 'rect': pg.draw.rect(surface, i[1], pg.Rect(i[2][0], i[2][1], i[3], i[3]))
+        pg.image.save(surface, name+'.png')
                                     
-                                pg.display.update(pg.Rect(120, 20, 100, 50))
+                            
             
                                 
                     
