@@ -58,10 +58,10 @@ class UI():
                         root.resizable(False, False)
                         root.title('Save an Image')
                         Frame = ttk.Frame(root)
-                        cc = ttk.Label(name, text="Name of the Image")
-                        cc.pack(fill='x', expand=True)
-                        ce = ttk.Entry(signin, textvariable=c)
-                        ce.pack(fill='x', expand=True)
+                        text0 = ttk.Label(Frame, text="Name of the Image")
+                        text0.pack(fill='x', expand=True)
+                        entry0 = ttk.Entry(Frame, textvariable=name)
+                        entry0.pack(fill='x', expand=True)
 
 
             
