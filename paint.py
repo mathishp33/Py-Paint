@@ -34,7 +34,7 @@ class UI():
                             ]
         
     def save(self):
-        surface = pg.Surface((900, 900))
+        surface = pg.Surface((1700, 1000))
         for i in shapes:
             if i[0] == 'circle': pg.draw.circle(surface, i[1], i[2], i[3])
             if i[0] == 'rect': pg.draw.rect(surface, i[1], pg.Rect(i[2][0]-i[3]/2, i[2][1]-i[3]/2, i[3], i[3]))
@@ -76,20 +76,10 @@ class UI():
 
                         root.mainloop()
                         return True
-
-
-            
-        name = ''
-        surface = pg.Surface(1600, 900)
-        for i in shapes:
-            if i[0] == 'circle': pg.draw.circle(surface, i[1], i[2], i[3])
-            if i[0] == 'rect': pg.draw.rect(surface, i[1], pg.Rect(i[2][0], i[2][1], i[3], i[3]))
-        pg.image.save(surface, name+'.png')
-                                    
-                            
-            
-                                
+                    else:
+                        return True
                     
+
     def scale_button(self):
         rect = pg.Rect(120-5, 150-5, 100+10, 20+10)
         t_scale = self.font32.render('SCALE : ', True, (200, 200, 200))
