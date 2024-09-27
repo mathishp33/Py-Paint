@@ -13,13 +13,6 @@ mouse_click = True
 shapes = []
 color = (255, 0, 0)
 
-def update():
-
-            
-        pg.display.update(pg.Rect(120, 20, 100, 50))
-            
-        
-
 
 class UI():
     def __init__(self):
@@ -56,15 +49,7 @@ class UI():
                     return False
                 if pg.mouse.get_pressed()[0]:
                     if save_rect.collidepoint(mouse_pos):
-                        text = 'NAME IT'
-                        running = True
-                        while running:
-                            pg.draw.rect(screen, (50, 50, 50), pg.Rect(120, 20, 100, 50))
-                            for event in pg.event.get():
-                                if event.type == pg.QUIT:
-                                    running = False
-                                    return False
-            pg.display.update(pg.Rect(120, 20, 100, 50))   
+                        
 
             
         name = ''
