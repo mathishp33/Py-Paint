@@ -1,6 +1,9 @@
 
 import pygame as pg
 import time
+import tkinter as tk
+from tkinter import ttk
+
 
 pg.init()
 FPS = 240
@@ -49,7 +52,17 @@ class UI():
                     return False
                 if pg.mouse.get_pressed()[0]:
                     if save_rect.collidepoint(mouse_pos):
-                        
+                        name = tk.StringVar()
+                        root = tk.Tk()
+                        root.geometry("300x400")
+                        root.resizable(False, False)
+                        root.title('Save an Image')
+                        Frame = ttk.Frame(root)
+                        cc = ttk.Label(name, text="Name of the Image")
+                        cc.pack(fill='x', expand=True)
+                        ce = ttk.Entry(signin, textvariable=c)
+                        ce.pack(fill='x', expand=True)
+
 
             
         name = ''
