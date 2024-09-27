@@ -1,3 +1,4 @@
+
 import pygame as pg
 import time
 
@@ -50,7 +51,7 @@ class UI():
             for event in pg.event.get():
                 if event.type == pg.QUIT:
                     return False
-                if event.type == pg.MOUSEBUTTONDOWN:
+                if pg.mouse.get_pressed()[0]:
                     if save_rect.collidepoint(mouse_pos):
                         pass
                     else:
@@ -64,7 +65,7 @@ class UI():
         screen.blit(t_scale, t_scale_rect)
         pg.draw.rect(screen, (50, 50, 50), rect, 0, 5)
         pg.draw.circle(screen, (255, 255, 255), (self.scale+120, 160), 5)
-        pg.display.flip()
+        pg.display.update(rect)
         running = True
         while running:
             mouse_pos = pg.mouse.get_pos()
@@ -92,7 +93,7 @@ class UI():
         ci_rect= ci_text.get_rect(center=(400, 170))
         pg.draw.rect(screen, (50, 50, 50), ci_rect, 0, 5)
         screen.blit(ci_text, ci_rect)
-        pg.display.update()
+        pg.display.update([rect_rect, ci_rect])
         running = True
         while running:
             mouse_pos = pg.mouse.get_pos()
@@ -133,7 +134,7 @@ class UI():
         pg.draw.circle(screen, (255, 255, 255), (self.R/255*100+550, 160), 5)
         pg.draw.circle(screen, (255, 255, 255), (self.G/255*100+550, 240), 5)
         pg.draw.circle(screen, (255, 255, 255), (self.B/255*100+550, 320), 5)
-        pg.display.flip()
+        pg.display.update([rect0, rect1, rect2, r_scale_rect, g_scale_rect, b_scale_rect])
         running = True
         while running:
             mouse_pos = pg.mouse.get_pos()
@@ -200,6 +201,9 @@ class UI():
                     return self.color_button()
                 if j == 3:
                     return self.image_button()
+        pg.draw.rect(screen, (self.R, self.G, self.B), pg.Rect(675, 45, 30, 30))
+        
+        pg.draw.rect(screen, (0, 0, 0), pg.Rect(675, 45, 30, 30), 2)
         return True
     
 
