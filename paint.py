@@ -52,7 +52,7 @@ class UI():
                     return False
                 if pg.mouse.get_pressed()[0]:
                     if save_rect.collidepoint(mouse_pos):
-                        name = tk.StringVar()
+                        self.name = tk.StringVar()
                         root = tk.Tk()
                         root.geometry("300x400")
                         root.resizable(False, False)
@@ -60,8 +60,13 @@ class UI():
                         Frame = ttk.Frame(root)
                         text0 = ttk.Label(Frame, text="Name of the Image")
                         text0.pack(fill='x', expand=True)
-                        entry0 = ttk.Entry(Frame, textvariable=name)
+                        entry0 = ttk.Entry(Frame, textvariable=self.name)
                         entry0.pack(fill='x', expand=True)
+
+                        sub = ttk.Button(Frame, text="Save Image", command=self.save)
+                        sub.pack(fill='x', expand=True, pady=0)
+
+                        root.mainloop()
 
 
             
