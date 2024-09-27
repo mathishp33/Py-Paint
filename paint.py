@@ -3,7 +3,7 @@ import pygame as pg
 import time
 import tkinter as tk
 from tkinter import ttk
-
+from tkinter import filedialog as fd
 
 pg.init()
 FPS = 240
@@ -76,6 +76,9 @@ class UI():
 
                         root.mainloop()
                         return True
+                    elif load_rect.collidepoint(mouse_pos):
+                        filename = fd.askopenfilename()
+                        print(filename)
                     else:
                         return True
                     
@@ -251,17 +254,16 @@ while running:
     for event in pg.event.get():
         if event.type == pg.QUIT:
             running = False
-            pg.display.quit()
-            pg.quit()
         if pg.mouse.get_pressed()[0]:
             mouse_click = True
         else: mouse_click = False
         
     paint.update()
-    running = ui.draw()
+    if not running: running = ui.draw()
     for i in shapes:
         if i[0] == 'circle': pg.draw.circle(screen, i[1], i[2], i[3])
         if i[0] == 'rect': pg.draw.rect(screen, i[1], pg.Rect(i[2][0]-i[3]/2, i[2][1]-i[3]/2, i[3], i[3]))
     pg.display.flip()
     clock.tick(FPS)
     
+pg.quit()
