@@ -34,13 +34,11 @@ class UI():
                             ]
         
     def save(self):
-        surface = pg.Surface(900, 900)
+        surface = pg.Surface((900, 900))
         for i in shapes:
             if i[0] == 'circle': pg.draw.circle(surface, i[1], i[2], i[3])
             if i[0] == 'rect': pg.draw.rect(surface, i[1], pg.Rect(i[2][0]-i[3]/2, i[2][1]-i[3]/2, i[3], i[3]))
-        pg.image.save(surface, self.name+'.png')
-
-        pg.image.save()
+        pg.image.save(surface, 'saved_images/'+self.name.get()+'.png')
     def file_button(self):
         save_text = self.font32.render('Save', True, (200, 200, 200))
         save_rect= save_text.get_rect(center=(50, 120))
@@ -77,6 +75,7 @@ class UI():
                         sub.pack(fill='x', expand=True, pady=0)
 
                         root.mainloop()
+                        return True
 
 
             
