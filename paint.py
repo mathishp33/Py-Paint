@@ -1,5 +1,6 @@
 
 import pygame as pg
+from pygame.locals import *
 import time
 import tkinter as tk
 from tkinter import ttk
@@ -21,6 +22,8 @@ class UI():
     def __init__(self):
         self.R, self.B, self.G = 255, 0, 0
         self.root = 0
+        self.loaded_img = 0
+        self.cancel = False
         self.scale = 20
         self.shape = 'circle'
         self.font32 = pg.font.Font('freesansbold.ttf', 32)
@@ -31,13 +34,11 @@ class UI():
                             (self.font48.render('Color', True, (255, 255, 255)), self.font48.render('Color', True, (255, 255, 255)).get_rect(center=(600, 50))),
                             (self.font48.render('Image', True, (255, 255, 255)), self.font48.render('Image', True, (255, 255, 255)).get_rect(center=(800, 50)))
                             ]
-        
-    def save(self):
-        surface = pg.Surface((1700, 1000))
-        for i in shapes:
-            if i[0] == 'circle': pg.draw.circle(surface, i[1], i[2], i[3])
-            if i[0] == 'rect': pg.draw.rect(surface, i[1], pg.Rect(i[2][0]-i[3]/2, i[2][1]-i[3]/2, i[3], i[3]))
-        pg.image.save(surface, 'saved_images/'+self.name.get()+'.png')
+    def cancel(self):
+        self.cancel = True
+        self.root.destroy()
+    def dont_cancel(self):
+        self.cancel = False
         self.root.destroy()
     def file_button(self):
         save_text = self.font32.render('Save', True, (200, 200, 200))
@@ -57,28 +58,36 @@ class UI():
                     return False
                 if pg.mouse.get_pressed()[0]:
                     if save_rect.collidepoint(mouse_pos):
+                        filename = fd.asksaveasfile(mode='w', defaultextension=".jpg")
+                        print('saved image at : ', filename)
+                        surface = pg.Surface((1600, 900))
+                        for i in shapes:
+                            if i[0] == 'circle': pg.draw.circle(surface, i[1], (i[2][0], i[2][1]-100), i[3])
+                            if i[0] == 'rect': pg.draw.rect(surface, i[1], pg.Rect(i[2][0]-i[3]/2, i[2][1]-i[3]/2-100, i[3], i[3]))
+                        surface = surface.convert()
+                        pg.image.save(surface, filename)
+                        return True
+                    elif load_rect.collidepoint(mouse_pos):
+                        self.cancel = False
+                        filename = fd.askopenfilename(title='Open an Image', initialdir='C:/')
+                        print('loading image at : ', filename)
+                        self.loaded_img = pg.image.load(filename)
                         self.root = tk.Tk()
                         self.root.geometry("200x100")
                         self.root.resizable(False, False)
-                        self.root.title('Save an Image')
-
-                        Frame = ttk.Frame(self.root)
-                        Frame.pack(padx=10, pady=10, fill='x', expand=True)
-
-                        text0 = ttk.Label(Frame, text="Name of the Image")
-                        self.name = tk.StringVar()
+                        self.root.title('Load an Image')
+                        text0 = ttk.Label(self.root, text="Loading an image will overwrite the \n previous drawing")
                         text0.pack(fill='x', expand=True)
-                        entry0 = ttk.Entry(Frame, textvariable=self.name)
-                        entry0.pack(fill='x', expand=True)
-
-                        sub = ttk.Button(Frame, text="Save Image", command=self.save)
-                        sub.pack(fill='x', expand=True, pady=0)
-
+                        cance0 = ttk.Button(self.root, text="Ok, Continue", command=self.dont_cancel)
+                        cance0.pack(fill='x', expand=True, pady=0)
+                        cancel = ttk.Button(self.root, text="No, Cancel", command=self.cancel)
+                        cancel.pack(fill='x', expand=True, pady=0)
                         self.root.mainloop()
-                        return True
-                    elif load_rect.collidepoint(mouse_pos):
-                        filename = fd.askopenfilename()
-                        print(filename)
+                        try: 
+                            self.loaded_img = pg.image.load(filename)
+                            self.loaded_img = pg.transform.scale(self.loaded_img, (1600, 900))
+
+                        except: print("error loading an image")
                     else:
                         return True
                     
@@ -261,6 +270,7 @@ while running:
     paint.update()
     if running: running = ui.draw()
     else: ui.draw()
+    if ui.loaded_img != 0: screen.blit(ui.loaded_img, (0, 100))
     for i in shapes:
         if i[0] == 'circle': pg.draw.circle(screen, i[1], i[2], i[3])
         if i[0] == 'rect': pg.draw.rect(screen, i[1], pg.Rect(i[2][0]-i[3]/2, i[2][1]-i[3]/2, i[3], i[3]))
