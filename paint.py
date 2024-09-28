@@ -19,9 +19,8 @@ color = (255, 0, 0)
 
 class UI():
     def __init__(self):
-        self.R = 255
-        self.G = 0
-        self.B = 0
+        self.R, self.B, self.G = 255, 0, 0
+        self.root = 0
         self.scale = 20
         self.shape = 'circle'
         self.font32 = pg.font.Font('freesansbold.ttf', 32)
@@ -39,6 +38,7 @@ class UI():
             if i[0] == 'circle': pg.draw.circle(surface, i[1], i[2], i[3])
             if i[0] == 'rect': pg.draw.rect(surface, i[1], pg.Rect(i[2][0]-i[3]/2, i[2][1]-i[3]/2, i[3], i[3]))
         pg.image.save(surface, 'saved_images/'+self.name.get()+'.png')
+        self.root.destroy()
     def file_button(self):
         save_text = self.font32.render('Save', True, (200, 200, 200))
         save_rect= save_text.get_rect(center=(50, 120))
@@ -57,12 +57,12 @@ class UI():
                     return False
                 if pg.mouse.get_pressed()[0]:
                     if save_rect.collidepoint(mouse_pos):
-                        root = tk.Tk()
-                        root.geometry("200x100")
-                        root.resizable(False, False)
-                        root.title('Save an Image')
+                        self.root = tk.Tk()
+                        self.root.geometry("200x100")
+                        self.root.resizable(False, False)
+                        self.root.title('Save an Image')
 
-                        Frame = ttk.Frame(root)
+                        Frame = ttk.Frame(self.root)
                         Frame.pack(padx=10, pady=10, fill='x', expand=True)
 
                         text0 = ttk.Label(Frame, text="Name of the Image")
@@ -74,7 +74,7 @@ class UI():
                         sub = ttk.Button(Frame, text="Save Image", command=self.save)
                         sub.pack(fill='x', expand=True, pady=0)
 
-                        root.mainloop()
+                        self.root.mainloop()
                         return True
                     elif load_rect.collidepoint(mouse_pos):
                         filename = fd.askopenfilename()
@@ -259,7 +259,8 @@ while running:
         else: mouse_click = False
         
     paint.update()
-    if not running: running = ui.draw()
+    if running: running = ui.draw()
+    else: ui.draw()
     for i in shapes:
         if i[0] == 'circle': pg.draw.circle(screen, i[1], i[2], i[3])
         if i[0] == 'rect': pg.draw.rect(screen, i[1], pg.Rect(i[2][0]-i[3]/2, i[2][1]-i[3]/2, i[3], i[3]))
