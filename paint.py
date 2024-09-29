@@ -58,13 +58,12 @@ class UI():
                     return False
                 if pg.mouse.get_pressed()[0]:
                     if save_rect.collidepoint(mouse_pos):
-                        filename = fd.asksaveasfile(mode='w', defaultextension=".jpg")
+                        filename = fd.asksaveasfile(mode='wb', defaultextension=".jpg")
                         print('saved image at : ', filename)
                         surface = pg.Surface((1600, 900))
                         for i in shapes:
                             if i[0] == 'circle': pg.draw.circle(surface, i[1], (i[2][0], i[2][1]-100), i[3])
                             if i[0] == 'rect': pg.draw.rect(surface, i[1], pg.Rect(i[2][0]-i[3]/2, i[2][1]-i[3]/2-100, i[3], i[3]))
-                        surface = surface.convert()
                         pg.image.save(surface, filename)
                         return True
                     elif load_rect.collidepoint(mouse_pos):
